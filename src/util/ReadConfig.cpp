@@ -11,7 +11,7 @@ ReadConfig::~ReadConfig()
 int ReadConfig::GetAPIBearer(std::string& APIBearer)
 {
     int nRet = 0;
-    std::ifstream configFile("C:/ToyProjsects/LostArkAPIForge/config.cfg");
+    std::ifstream configFile("C:/ToyProjects/LostArkAPIForge/config.cfg");
     std::string line;
     std::string bearerToken;
 
@@ -36,8 +36,5 @@ int ReadConfig::GetAPIBearer(std::string& APIBearer)
     {
         nRet = static_cast<int>(RESULT_CODE::ERROR_FAIL_OPEN_CONFIGFILE);
     }
-
-
-
     return nRet;
 }

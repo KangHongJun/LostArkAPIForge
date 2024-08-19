@@ -15,12 +15,13 @@ int main() {
     switch (nRet)
     {
     case static_cast<int>(RESULT_CODE::OK):
-        std::cout << APIBearer << std::endl;
+//        std::cout << "APIBearer : " << APIBearer << std::endl;
         break;
     case static_cast<int>(RESULT_CODE::ERROR_FAIL_OPEN_CONFIGFILE):
-        std::cout << APIBearer << std::endl;
+        std::cout << "[ERROR_FAIL_OPEN_CONFIGFILE] APIBearer : " << APIBearer << std::endl;
         break;
     }
 
+    nRet = curlTest.APITest(APIBearer);
     return 0;
 }
