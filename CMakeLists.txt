@@ -16,12 +16,12 @@ set(CURL_ROOT "C:/cpp_tools/curl-8.9.0")
 
 set (SRC_PATH ${CMAKE_SOURCE_DIR}/src/)
 set (API_PATH ${CMAKE_SOURCE_DIR}/src/API)
-set (UI_PATH ${CMAKE_SOURCE_DIR}/src/UI)
+set (UI_PATH ${CMAKE_SOURCE_DIR}/src/GUI)
 set (UTIL_PATH ${CMAKE_SOURCE_DIR}/src/util)
 set(CMAKE_C_FLAGS "-fexec-charset=CP949")
 
 add_subdirectory(src/API)
-add_subdirectory(src/UI)
+add_subdirectory(src/GUI)
 add_subdirectory(src/util)
 
 add_executable(LostArkAPIForge
@@ -35,14 +35,14 @@ include_directories(${CURL_ROOT}/include)
 link_directories(${CURL_ROOT}/lib)
 
 target_include_directories(LostArkAPIForge PRIVATE
-        ${UI_PATH}
+        ${GUI_PATH}
         ${API_PATH}
         ${UTIL_PATH}
 )
 
 target_link_libraries(LostArkAPIForge
         util
-        UI
+        GUI
         API
         Qt6::Core
         Qt6::Widgets
