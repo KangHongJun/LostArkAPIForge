@@ -3,8 +3,14 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <curl/curl.h>
 
-int main() {
+
+#include <QApplication>
+#include <QWidget>
+
+int main(int argc, char *argv[])
+{
     CurlTest curlTest;
     ReadConfig ReadConfig;
 
@@ -23,5 +29,8 @@ int main() {
     }
 
     nRet = curlTest.APITest(APIBearer);
-    return 0;
+    QApplication app(argc, argv);
+    QWidget window;
+    window.show();
+    return app.exec();
 }

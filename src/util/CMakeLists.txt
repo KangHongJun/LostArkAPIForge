@@ -8,6 +8,6 @@ set(UTIL_SOURCES
 )
 
 add_library(util STATIC ${UTIL_SOURCES})
-target_include_directories(API PUBLIC
+target_include_directories(util PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
