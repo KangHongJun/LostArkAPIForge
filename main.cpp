@@ -1,13 +1,12 @@
 #include "src/API/CurlTest.h"
 #include "src/util/ReadConfig.h"
+#include "src/GUI/MainWindow.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <curl/curl.h>
-
 
 #include <QApplication>
-#include <QWidget>
 
 int main(int argc, char *argv[])
 {
@@ -30,7 +29,8 @@ int main(int argc, char *argv[])
 
     nRet = curlTest.APITest(APIBearer);
     QApplication app(argc, argv);
-    QWidget window;
+    MainWindow window;
+    window.setWindowTitle("MainWindow Example");
     window.show();
     return app.exec();
 }
