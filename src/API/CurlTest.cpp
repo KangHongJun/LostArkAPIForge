@@ -49,9 +49,15 @@ int CurlTest::APITest(const std::string& APIBearer)
         Curlres = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         nlohmann::json json_obj = nlohmann::json::parse(readBuffer);
+        auto ItemsData = json_obj["Items"];
+
+        for (const auto& ItemData : ItemsData)
+        {
+            std::string ItemDataName = ItemData["Name"];
+            std::cout << "Item Name: " << ItemDataName << std::endl;
+        }
 
 
-        std::cout << "json_obj" << json_obj << std::endl;
     }
     return 0;
 }
