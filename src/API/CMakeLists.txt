@@ -15,5 +15,5 @@ set(API_SOURCES
 add_library(API STATIC ${API_SOURCES})
 target_include_directories(API PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        "C:/cpp_tools/curl-8.4.0/lib/libcurl.dll.a"
+        "C:/cpp_tools/curl-8.4.0/lib/"
 )

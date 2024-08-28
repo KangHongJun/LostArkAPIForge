@@ -47,5 +47,4 @@ target_link_libraries(LostArkAPIForge
         Qt6::Core
         Qt6::Widgets
         "C:/cpp_tools/curl-8.4.0/lib/libcurl.dll.a"
-
 )

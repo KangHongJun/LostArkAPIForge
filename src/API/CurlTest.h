@@ -1,5 +1,6 @@
 #pragma once
 #include "curl/curl.h"
+#include "../../thirdparty/json.hpp"
 #include <string>
 
 #include <iostream>
@@ -19,6 +20,7 @@ public:
 private:
     CURL *curl;
     CURLcode Curlres;
+    std::string readBuffer;
     std::string APIurl;
     std::string filename = "./config.cfg";
     bool bEndPage = false;
