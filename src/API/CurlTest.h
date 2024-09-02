@@ -16,7 +16,6 @@ public:
 public:
     int APITest(const std::string& APIBearer);
 
-
 private:
     CURL *curl;
     CURLcode Curlres;
@@ -26,4 +25,14 @@ private:
     bool bEndPage = false;
     int page = 1;
 
+struct MarketItem
+{
+    std::string Name = "";
+    int BundleCount = 0;
+    int CurrentMinPrice = 0;
+    float YDayAvgPrice = 0.f;
+};
+
+public:
+    std::map<std::string, MarketItem> ItemMap;
 };

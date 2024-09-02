@@ -3,6 +3,7 @@
 CurlTest::CurlTest()
 {
     APIurl = "https://developer-lostark.game.onstove.com/markets/items";
+
 }
 
 CurlTest::~CurlTest()
@@ -54,10 +55,23 @@ int CurlTest::APITest(const std::string& APIBearer)
         for (const auto& ItemData : ItemsData)
         {
             std::string ItemDataName = ItemData["Name"];
-            std::cout << "Item Name: " << ItemDataName << std::endl;
+
+            MarketItem MarketItem;
+            MarketItem.Name = ItemData["Name"];
+            MarketItem.BundleCount = ItemData["BundleCount"];
+            MarketItem.CurrentMinPrice = ItemData["CurrentMinPrice"];
+            MarketItem.YDayAvgPrice = ItemData["YDayAvgPrice"];
+
+            ItemMap[MarketItem.Name] = MarketItem;
         }
 
-
+        for (const auto& pair : ItemMap) {
+            std::cout << "Item Name: " << pair.second.Name << std::endl;
+            std::cout << "Bundle Count: " << pair.second.BundleCount << std::endl;
+            std::cout << "Current Min Price: " << pair.second.CurrentMinPrice << std::endl;
+            std::cout << "Yesterday's Avg Price: " << pair.second.YDayAvgPrice << std::endl;
+            std::cout << "--------------------------" << std::endl;
+        }
     }
     return 0;
 }
