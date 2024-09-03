@@ -17,10 +17,39 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* use
     return size * nmemb;
 }
 
-int CurlTest::APITest(const std::string& APIBearer)
+int CurlTest::GetMarketItem(std::vector<MarketItem>* pVecItemList)
 {
+    std::cout << "res2" << std::endl;
+
+    for (const auto& pair : ItemMap) {
+        std::cout << "Item Name: " << pair.second.Name << std::endl;
+        std::cout << "Bundle Count: " << pair.second.BundleCount << std::endl;
+        std::cout << "Current Min Price: " << pair.second.CurrentMinPrice << std::endl;
+        std::cout << "Yesterday's Avg Price: " << pair.second.YDayAvgPrice << std::endl;
+        std::cout << "--------------------------" << std::endl;
+    }
+
+    int nRet = 0;
+
+    if (pVecItemList == nullptr)
+    {
+        nRet = -1;
+        return nRet;
+    }
+
+    for (const auto& pair : ItemMap)
+    {
+        pVecItemList->push_back(pair.second);
+    }
+
+    return nRet;
+}
+
+int CurlTest::LoadMarketItem(const std::string& strAPIBearer)
+{
+    int nRet = 0;
     std::string strpage = std::to_string(page);
-    std::string Authorization = "Authorization: Bearer " + APIBearer;
+    std::string Authorization = "Authorization: Bearer " + strAPIBearer;
     std::string category = "{\"CategoryCode\":90000,"
                            "\"PageNo\":" + strpage + std::string("}");
 
@@ -54,8 +83,6 @@ int CurlTest::APITest(const std::string& APIBearer)
 
         for (const auto& ItemData : ItemsData)
         {
-            std::string ItemDataName = ItemData["Name"];
-
             MarketItem MarketItem;
             MarketItem.Name = ItemData["Name"];
             MarketItem.BundleCount = ItemData["BundleCount"];
@@ -63,15 +90,8 @@ int CurlTest::APITest(const std::string& APIBearer)
             MarketItem.YDayAvgPrice = ItemData["YDayAvgPrice"];
 
             ItemMap[MarketItem.Name] = MarketItem;
-        }
 
-        for (const auto& pair : ItemMap) {
-            std::cout << "Item Name: " << pair.second.Name << std::endl;
-            std::cout << "Bundle Count: " << pair.second.BundleCount << std::endl;
-            std::cout << "Current Min Price: " << pair.second.CurrentMinPrice << std::endl;
-            std::cout << "Yesterday's Avg Price: " << pair.second.YDayAvgPrice << std::endl;
-            std::cout << "--------------------------" << std::endl;
         }
     }
-    return 0;
+    return nRet;
 }

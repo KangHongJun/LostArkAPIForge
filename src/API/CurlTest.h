@@ -1,6 +1,7 @@
 #pragma once
 #include "curl/curl.h"
 #include "../../thirdparty/json.hpp"
+#include "../util/CODE_DEFINE.h"
 #include <string>
 
 #include <iostream>
@@ -14,7 +15,8 @@ public:
     ~CurlTest();
 
 public:
-    int APITest(const std::string& APIBearer);
+    int LoadMarketItem(const std::string& APIBearer);
+    int GetMarketItem(std::vector<MarketItem>* pVecItemList);
 
 private:
     CURL *curl;
@@ -25,14 +27,8 @@ private:
     bool bEndPage = false;
     int page = 1;
 
-struct MarketItem
-{
-    std::string Name = "";
-    int BundleCount = 0;
-    int CurrentMinPrice = 0;
-    float YDayAvgPrice = 0.f;
-};
+    std::map<std::string, MarketItem> ItemMap;
 
 public:
-    std::map<std::string, MarketItem> ItemMap;
+
 };
