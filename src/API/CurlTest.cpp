@@ -19,16 +19,6 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* use
 
 int CurlTest::GetMarketItem(std::vector<MarketItem>* pVecItemList)
 {
-    std::cout << "res2" << std::endl;
-
-    for (const auto& pair : ItemMap) {
-        std::cout << "Item Name: " << pair.second.Name << std::endl;
-        std::cout << "Bundle Count: " << pair.second.BundleCount << std::endl;
-        std::cout << "Current Min Price: " << pair.second.CurrentMinPrice << std::endl;
-        std::cout << "Yesterday's Avg Price: " << pair.second.YDayAvgPrice << std::endl;
-        std::cout << "--------------------------" << std::endl;
-    }
-
     int nRet = 0;
 
     if (pVecItemList == nullptr)
@@ -50,7 +40,7 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer)
     int nRet = 0;
     std::string strpage = std::to_string(page);
     std::string Authorization = "Authorization: Bearer " + strAPIBearer;
-    std::string category = "{\"CategoryCode\":90000,"
+    std::string category = "{\"CategoryCode\":50000,"
                            "\"PageNo\":" + strpage + std::string("}");
 
     struct curl_slist *headerlist = nullptr;
