@@ -18,6 +18,9 @@ private:
     int MakeCategoryListWidget();
     int SetMarketItem();
 
+    void DisplayItemInfo(QListWidgetItem* item);
+
+
     CurlTest curlTest;
     ReadConfig ReadConfig;
 
@@ -27,6 +30,8 @@ private:
     QListWidget *category_listWidget;
     QPushButton *button1;
     QVBoxLayout *layout;
+
+    QLabel *ItemInfoLabel;
     QLabel *nameLabel;
     QLineEdit *editDC;
 };

@@ -6,8 +6,11 @@ MainWindow::MainWindow()
     nRet = SetMarketItem();
     nRet = MakeCategoryListWidget();
     category_listWidget = new QListWidget(this);
+    ItemInfoLabel = new QLabel(this);
+    ItemInfoLabel->hide();
 
-    for (const auto& marketItem : vecItemList) {
+    for (const auto& marketItem : vecItemList)
+    {
         category_listWidget->addItem(QString::fromStdString(marketItem.Name));
     }
 
@@ -15,7 +18,10 @@ MainWindow::MainWindow()
     button1 = new QPushButton("새로고침", this);
     layout->addWidget(button1);
     layout->addWidget(category_listWidget);
+    layout->addWidget(ItemInfoLabel);
     setLayout(layout);
+
+    connect(category_listWidget, &QListWidget::itemClicked, this, &MainWindow::DisplayItemInfo);
 }
 
 MainWindow::~MainWindow()
@@ -58,4 +64,11 @@ int MainWindow::MakeCategoryListWidget()
 
 
     return nRet;
+}
+
+void MainWindow::DisplayItemInfo(QListWidgetItem* item)
+{
+    QString selectedItemName = item->text();
+    ItemInfoLabel->setText(selectedItemName);
+    ItemInfoLabel->show();
 }
