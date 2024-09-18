@@ -3,16 +3,13 @@
 MainWindow::MainWindow()
 {
     int nRet = 0;
-    nRet = SetMarketItem();
-    nRet = MakeCategoryListWidget();
+
     category_listWidget = new QListWidget(this);
     ItemInfoLabel = new QLabel(this);
     ItemInfoLabel->hide();
 
-    for (const auto& marketItem : vecItemList)
-    {
-        category_listWidget->addItem(QString::fromStdString(marketItem.Name));
-    }
+    nRet = SetMarketItem();
+    nRet = MakeCategoryListWidget();
 
     layout = new QVBoxLayout;
     button1 = new QPushButton("새로고침", this);
@@ -43,17 +40,10 @@ int MainWindow::SetMarketItem()
             break;
     }
 
-    nRet = curlTest.LoadMarketItem(APIBearer);
-    nRet = curlTest.GetMarketItem(&vecItemList);
+    std::string strCategory = "{\"CategoryCode\":90000,"
+                           "\"PageNo\": 0" + std::string("}");
 
-    for (const auto& marketItem : vecItemList) {
-        std::cout << "Item Name: " << marketItem.Name << std::endl;
-        std::cout << "Bundle Count: " << marketItem.BundleCount << std::endl;
-        std::cout << "Current Min Price: " << marketItem.CurrentMinPrice << std::endl;
-        std::cout << "Yesterday's Avg Price: " << marketItem.YDayAvgPrice << std::endl;
-        std::cout << "--------------------------" << std::endl;
-    }
-
+    nRet = curlTest.LoadMarketItem(APIBearer, strCategory, mapItemList);
     return nRet;
 }
 
@@ -62,6 +52,10 @@ int MainWindow::MakeCategoryListWidget()
 {
     int nRet = 0;
 
+    for (const auto& marketItem : mapItemList)
+    {
+        category_listWidget->addItem(QString::fromStdString(marketItem.first));
+    }
 
     return nRet;
 }

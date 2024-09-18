@@ -24,7 +24,7 @@ private:
     CurlTest curlTest;
     ReadConfig ReadConfig;
 
-    std::vector<MarketItem> vecItemList;
+    std::map<std::string, MarketItem> mapItemList;
     std::vector<std::pair<std::string,std::string>> vecItemCMP;
 
     QListWidget *category_listWidget;

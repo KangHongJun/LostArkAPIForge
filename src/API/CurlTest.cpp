@@ -35,13 +35,12 @@ int CurlTest::GetMarketItem(std::vector<MarketItem>* pVecItemList)
     return nRet;
 }
 
-int CurlTest::LoadMarketItem(const std::string& strAPIBearer)
+int CurlTest::LoadMarketItem(const std::string& strAPIBearer, const std::string& strCategory,
+                             std::map<std::string, MarketItem>& mapItemList)
 {
     int nRet = 0;
     std::string strpage = std::to_string(page);
     std::string Authorization = "Authorization: Bearer " + strAPIBearer;
-    std::string category = "{\"CategoryCode\":50000,"
-                           "\"PageNo\":" + strpage + std::string("}");
 
     struct curl_slist *headerlist = nullptr;
     headerlist = curl_slist_append(headerlist, "Accept: application/json");
@@ -61,7 +60,7 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer)
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, category.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, strCategory.c_str());
 
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
@@ -81,6 +80,7 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer)
 
             ItemMap[MarketItem.Name] = MarketItem;
 
+            mapItemList[MarketItem.Name] = MarketItem;
         }
     }
     return nRet;

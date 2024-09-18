@@ -15,7 +15,8 @@ public:
     ~CurlTest();
 
 public:
-    int LoadMarketItem(const std::string& APIBearer);
+    int LoadMarketItem(const std::string& strAPIBearer, const std::string& strCategory,
+                       std::map<std::string, MarketItem>& mapItemList);
     int GetMarketItem(std::vector<MarketItem>* pVecItemList);
 
 private:
