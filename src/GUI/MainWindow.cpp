@@ -40,10 +40,16 @@ int MainWindow::SetMarketItem()
             break;
     }
 
-    std::string strCategory = "{\"CategoryCode\":90000,"
+    std::string strLifeCategory = "{\"CategoryCode\":90000,"
                            "\"PageNo\": 0" + std::string("}");
 
-    nRet = curlTest.LoadMarketItem(APIBearer, strCategory, mapItemList);
+    std::string strFusionCategory = "{\"CategoryCode\":50010, \"ItemName\":\"융화\","
+                                  "\"PageNo\": 0" + std::string("}");
+
+    nRet = curlTest.LoadMarketItem(APIBearer, strLifeCategory, mapLifeItem);
+    nRet = curlTest.LoadMarketItem(APIBearer, strFusionCategory, mapFusionItem);
+
+
     return nRet;
 }
 
@@ -52,7 +58,7 @@ int MainWindow::MakeCategoryListWidget()
 {
     int nRet = 0;
 
-    for (const auto& marketItem : mapItemList)
+    for (const auto& marketItem : mapFusionItem)
     {
         category_listWidget->addItem(QString::fromStdString(marketItem.first));
     }

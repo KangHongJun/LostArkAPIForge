@@ -39,6 +39,8 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer, const std::string&
                              std::map<std::string, MarketItem>& mapItemList)
 {
     int nRet = 0;
+    std::string readBuffer;
+
     std::string strpage = std::to_string(page);
     std::string Authorization = "Authorization: Bearer " + strAPIBearer;
 
@@ -67,21 +69,32 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer, const std::string&
 
         Curlres = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-        nlohmann::json json_obj = nlohmann::json::parse(readBuffer);
-        auto ItemsData = json_obj["Items"];
-
-        for (const auto& ItemData : ItemsData)
+        try
         {
-            MarketItem MarketItem;
-            MarketItem.Name = ItemData["Name"];
-            MarketItem.BundleCount = ItemData["BundleCount"];
-            MarketItem.CurrentMinPrice = ItemData["CurrentMinPrice"];
-            MarketItem.YDayAvgPrice = ItemData["YDayAvgPrice"];
+            nlohmann::json json_obj = nlohmann::json::parse(readBuffer);
+            auto ItemsData = json_obj["Items"];
 
-            ItemMap[MarketItem.Name] = MarketItem;
+            for (const auto& ItemData : ItemsData)
+            {
+                MarketItem MarketItem;
+                MarketItem.Name = ItemData["Name"];
+                MarketItem.BundleCount = ItemData["BundleCount"];
+                MarketItem.CurrentMinPrice = ItemData["CurrentMinPrice"];
+                MarketItem.YDayAvgPrice = ItemData["YDayAvgPrice"];
 
-            mapItemList[MarketItem.Name] = MarketItem;
+                ItemMap[MarketItem.Name] = MarketItem;
+
+                mapItemList[MarketItem.Name] = MarketItem;
+            }
+
+        }
+        catch (const nlohmann::json::parse_error& ex)
+        {
+            std::cerr << "JSON 파싱 오류: " << ex.what() << "\n" << readBuffer << std::endl;
+
+            return nRet;
         }
     }
+
     return nRet;
 }

@@ -22,7 +22,6 @@ public:
 private:
     CURL *curl;
     CURLcode Curlres;
-    std::string readBuffer;
     std::string APIurl;
     std::string filename = "./config.cfg";
     bool bEndPage = false;
