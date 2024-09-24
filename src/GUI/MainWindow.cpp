@@ -3,10 +3,16 @@
 MainWindow::MainWindow()
 {
     int nRet = 0;
+    int nCurrentPrice = 0;
 
     category_listWidget = new QListWidget(this);
-    ItemInfoLabel = new QLabel(this);
-    ItemInfoLabel->hide();
+    ItemNameLabel = new QLabel(this);
+    ItemNameLabel->hide();
+
+    ItemPriceLabel = new QLabel(this);
+    ItemPriceLabel->hide();
+
+
 
     nRet = SetMarketItem();
     nRet = MakeCategoryListWidget();
@@ -15,7 +21,8 @@ MainWindow::MainWindow()
     button1 = new QPushButton("새로고침", this);
     layout->addWidget(button1);
     layout->addWidget(category_listWidget);
-    layout->addWidget(ItemInfoLabel);
+    layout->addWidget(ItemNameLabel);
+    layout->addWidget(ItemPriceLabel);
     setLayout(layout);
 
     connect(category_listWidget, &QListWidget::itemClicked, this, &MainWindow::DisplayItemInfo);
@@ -49,7 +56,6 @@ int MainWindow::SetMarketItem()
     nRet = curlTest.LoadMarketItem(APIBearer, strLifeCategory, mapLifeItem);
     nRet = curlTest.LoadMarketItem(APIBearer, strFusionCategory, mapFusionItem);
 
-
     return nRet;
 }
 
@@ -69,6 +75,10 @@ int MainWindow::MakeCategoryListWidget()
 void MainWindow::DisplayItemInfo(QListWidgetItem* item)
 {
     QString selectedItemName = item->text();
-    ItemInfoLabel->setText(selectedItemName);
-    ItemInfoLabel->show();
+    ItemNameLabel->setText(selectedItemName);
+    MarketItem mMarkgetItem = mapFusionItem[selectedItemName.toStdString()];
+    nCurrentPrice = mMarkgetItem.CurrentMinPrice;
+    ItemPriceLabel->setText(std::to_string(nCurrentPrice).c_str());
+    ItemNameLabel->show();
+    ItemPriceLabel->show();
 }

@@ -28,12 +28,13 @@ private:
     std::map<std::string, MarketItem> mapLifeItem;
     std::vector<std::pair<std::string,std::string>> vecItemCMP;
 
+    int nCurrentPrice;
+
     QListWidget *category_listWidget;
     QPushButton *button1;
     QVBoxLayout *layout;
 
-    QLabel *ItemInfoLabel;
-    QLabel *nameLabel;
-    QLineEdit *editDC;
+    QLabel *ItemNameLabel;
+    QLabel *ItemPriceLabel;
 };
 
