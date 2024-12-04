@@ -15,7 +15,7 @@ public:
     ~CurlTest();
 
 public:
-    int LoadMarketItem(const std::string& strAPIBearer, const std::string& strCategory,
+    int LoadMarketItem(const std::string& strAPIBearer, const std::string& strCategory, const std::string& strItemName,
                        std::map<std::string, MarketItem>& mapItemList);
     int GetMarketItem(std::vector<MarketItem>* pVecItemList);
 
@@ -24,9 +24,6 @@ private:
     CURLcode Curlres;
     std::string APIurl;
     std::string filename = "./config.cfg";
-    bool bEndPage = false;
-    int page = 1;
-
     std::map<std::string, MarketItem> ItemMap;
 
 public:

@@ -47,14 +47,8 @@ int MainWindow::SetMarketItem()
             break;
     }
 
-    std::string strLifeCategory = "{\"CategoryCode\":90000,"
-                           "\"PageNo\": 0" + std::string("}");
-
-    std::string strFusionCategory = "{\"CategoryCode\":50010, \"ItemName\":\"융화\","
-                                  "\"PageNo\": 0" + std::string("}");
-
-    nRet = curlTest.LoadMarketItem(APIBearer, strLifeCategory, mapLifeItem);
-    nRet = curlTest.LoadMarketItem(APIBearer, strFusionCategory, mapFusionItem);
+    nRet = curlTest.LoadMarketItem(APIBearer, "90000", "", mapLifeItem);
+    nRet = curlTest.LoadMarketItem(APIBearer, "50010", "융화", mapFusionItem);
 
     return nRet;
 }
