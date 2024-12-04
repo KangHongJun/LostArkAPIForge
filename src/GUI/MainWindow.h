@@ -17,8 +17,9 @@ public:
 private:
     int MakeCategoryListWidget();
     int SetMarketItem();
-
+    void GetItemRecipe(std::string strSelectedItemName);
     void DisplayItemInfo(QListWidgetItem* item);
+
 
 
     CurlTest curlTest;

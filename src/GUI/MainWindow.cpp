@@ -72,6 +72,33 @@ int MainWindow::MakeCategoryListWidget()
     return nRet;
 }
 
+void MainWindow::GetItemRecipe(std::string strSelectedItemName)
+{
+    std::ifstream fItemRecipe("C:/ToyProjects/LostArkAPIForge/ItemRecipe.json");
+    if (!fItemRecipe.is_open())
+    {
+        std::cerr << "Recipe File Open Error\n";
+    }
+
+    nlohmann::json jsonItemRecipe;
+    fItemRecipe >> jsonItemRecipe;
+
+    auto jsonItemRecipeCategory = jsonItemRecipe[strSelectedItemName.c_str()];
+
+    for (auto& [keyItemRecipeCategory, valueItemRecipeCategory] : jsonItemRecipeCategory.items())
+    {
+        for (auto& [strItemName, intItemCount] : valueItemRecipeCategory.items())
+        {
+            MarketItem mMarkgetItem = mapLifeItem[strItemName];
+            nCurrentPrice = mMarkgetItem.CurrentMinPrice;
+
+            std::cout<< strItemName << "//" << intItemCount << "//" << nCurrentPrice << std::endl;
+
+
+        }
+    }
+}
+
 void MainWindow::DisplayItemInfo(QListWidgetItem* item)
 {
     QString selectedItemName = item->text();
@@ -81,4 +108,5 @@ void MainWindow::DisplayItemInfo(QListWidgetItem* item)
     ItemPriceLabel->setText(std::to_string(nCurrentPrice).c_str());
     ItemNameLabel->show();
     ItemPriceLabel->show();
+    GetItemRecipe(selectedItemName.toStdString());
 }
