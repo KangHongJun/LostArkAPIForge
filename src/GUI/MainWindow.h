@@ -29,7 +29,13 @@ private:
     std::map<std::string, MarketItem> mapLifeItem;
     std::vector<std::pair<std::string,std::string>> vecItemCMP;
 
-    int nCurrentPrice;
+    std::map<std::string, int> mapFusionItemBundle;
+
+    int nSelectedItemPrice;
+
+    float fTotalPrice;
+    float fCurrentPrice;
+    float fBundleCount;
 
     QListWidget *category_listWidget;
     QPushButton *button1;

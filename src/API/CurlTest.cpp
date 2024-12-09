@@ -92,14 +92,13 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer, const std::string&
                 for (const auto &ItemData: ItemsData) {
                     MarketItem MarketItem;
                     MarketItem.Name = ItemData["Name"];
-                    MarketItem.BundleCount = ItemData["BundleCount"];
-                    MarketItem.CurrentMinPrice = ItemData["CurrentMinPrice"];
+                    MarketItem.BundleCount = static_cast<float>(ItemData["BundleCount"]);
+                    MarketItem.CurrentMinPrice = static_cast<float>(ItemData["CurrentMinPrice"]);
                     MarketItem.YDayAvgPrice = ItemData["YDayAvgPrice"];
 
                     ItemMap[MarketItem.Name] = MarketItem;
 
                     mapItemList[MarketItem.Name] = MarketItem;
-                    std::cout << MarketItem.Name << std::endl;
 
                     intDataCount++;
                     if (static_cast<int>(intDataCount) == static_cast<int>(TotalCount))
@@ -108,13 +107,10 @@ int CurlTest::LoadMarketItem(const std::string& strAPIBearer, const std::string&
                         break;
                     }
                 }
-
-
-
                 intPage++;
             }
             catch (const nlohmann::json::parse_error &ex) {
-                std::cerr << "JSON 파싱 오류: " << ex.what() << "\n" << readBuffer << std::endl;
+                std::cerr << "Fail JSON Parsing: " << ex.what() << "\n" << readBuffer << std::endl;
 
                 return nRet;
             }

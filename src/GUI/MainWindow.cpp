@@ -3,7 +3,16 @@
 MainWindow::MainWindow()
 {
     int nRet = 0;
-    int nCurrentPrice = 0;
+    fCurrentPrice = 0.0f;
+    fBundleCount = 0.0f;
+    nSelectedItemPrice = 0;
+
+    mapFusionItemBundle = {
+            {"아비도스 융화 재료", 15},
+            {"최상급 오레하 융화 재료", 20},
+            {"상급 오레하 융화 재료", 20},
+            {"오레하 융화 재료", 30}
+    };
 
     category_listWidget = new QListWidget(this);
     ItemNameLabel = new QLabel(this);
@@ -11,8 +20,6 @@ MainWindow::MainWindow()
 
     ItemPriceLabel = new QLabel(this);
     ItemPriceLabel->hide();
-
-
 
     nRet = SetMarketItem();
     nRet = MakeCategoryListWidget();
@@ -81,15 +88,25 @@ void MainWindow::GetItemRecipe(std::string strSelectedItemName)
 
     for (auto& [keyItemRecipeCategory, valueItemRecipeCategory] : jsonItemRecipeCategory.items())
     {
+        fTotalPrice = 0.0f;
         for (auto& [strItemName, intItemCount] : valueItemRecipeCategory.items())
         {
             MarketItem mMarkgetItem = mapLifeItem[strItemName];
-            nCurrentPrice = mMarkgetItem.CurrentMinPrice;
 
-            std::cout<< strItemName << "//" << intItemCount << "//" << nCurrentPrice << std::endl;
-
-
+            if (strItemName == "조합비")
+            {
+                fBundleCount = 1;
+                fCurrentPrice = 1;
+            }
+            else
+            {
+                fBundleCount = mMarkgetItem.BundleCount;
+                fCurrentPrice = mMarkgetItem.CurrentMinPrice;
+            }
+            fTotalPrice += static_cast<float>(intItemCount) * (fCurrentPrice / fBundleCount);
         }
+
+        std::cout << "SelectedItem: " << nSelectedItemPrice * mapFusionItemBundle[strSelectedItemName] << "-" << keyItemRecipeCategory << ": " << fTotalPrice << std::endl;
     }
 }
 
@@ -98,8 +115,8 @@ void MainWindow::DisplayItemInfo(QListWidgetItem* item)
     QString selectedItemName = item->text();
     ItemNameLabel->setText(selectedItemName);
     MarketItem mMarkgetItem = mapFusionItem[selectedItemName.toStdString()];
-    nCurrentPrice = mMarkgetItem.CurrentMinPrice;
-    ItemPriceLabel->setText(std::to_string(nCurrentPrice).c_str());
+    nSelectedItemPrice = mMarkgetItem.CurrentMinPrice;
+    ItemPriceLabel->setText(std::to_string(nSelectedItemPrice).c_str());
     ItemNameLabel->show();
     ItemPriceLabel->show();
     GetItemRecipe(selectedItemName.toStdString());
