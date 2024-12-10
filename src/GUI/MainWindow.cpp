@@ -8,8 +8,8 @@ MainWindow::MainWindow()
     nSelectedItemPrice = 0;
 
     mapFusionItemBundle = {
-            {"아비도스 융화 재료", 15},
-            {"최상급 오레하 융화 재료", 20},
+            {"아비도스 융화 재료", 10},
+            {"최상급 오레하 융화 재료", 15},
             {"상급 오레하 융화 재료", 20},
             {"오레하 융화 재료", 30}
     };
@@ -21,6 +21,9 @@ MainWindow::MainWindow()
     ItemPriceLabel = new QLabel(this);
     ItemPriceLabel->hide();
 
+    TotalPricesLabel = new QLabel(this);
+    TotalPricesLabel->hide();
+
     nRet = SetMarketItem();
     nRet = MakeCategoryListWidget();
 
@@ -30,6 +33,7 @@ MainWindow::MainWindow()
     layout->addWidget(category_listWidget);
     layout->addWidget(ItemNameLabel);
     layout->addWidget(ItemPriceLabel);
+    layout->addWidget(TotalPricesLabel);
     setLayout(layout);
 
     connect(category_listWidget, &QListWidget::itemClicked, this, &MainWindow::DisplayItemInfo);
@@ -73,8 +77,15 @@ int MainWindow::MakeCategoryListWidget()
     return nRet;
 }
 
+void MainWindow::GetItemFee(int &nItemPrice)
+{
+    if (nItemPrice != 1)
+        nItemPrice -= static_cast<int>(std::ceil(nItemPrice * 0.05));
+}
+
 void MainWindow::GetItemRecipe(std::string strSelectedItemName)
 {
+    QString qstrTotalInfo = "";
     std::ifstream fItemRecipe("C:/ToyProjects/LostArkAPIForge/ItemRecipe.json");
     if (!fItemRecipe.is_open())
     {
@@ -92,7 +103,7 @@ void MainWindow::GetItemRecipe(std::string strSelectedItemName)
         for (auto& [strItemName, intItemCount] : valueItemRecipeCategory.items())
         {
             MarketItem mMarkgetItem = mapLifeItem[strItemName];
-
+//            // 제작비 할인 생략
             if (strItemName == "조합비")
             {
                 fBundleCount = 1;
@@ -105,19 +116,28 @@ void MainWindow::GetItemRecipe(std::string strSelectedItemName)
             }
             fTotalPrice += static_cast<float>(intItemCount) * (fCurrentPrice / fBundleCount);
         }
+        QString totalPriceText = QString("%1: %2").arg(QString::fromStdString(keyItemRecipeCategory)).arg(fTotalPrice);
 
-        std::cout << "SelectedItem: " << nSelectedItemPrice * mapFusionItemBundle[strSelectedItemName] << "-" << keyItemRecipeCategory << ": " << fTotalPrice << std::endl;
+        qstrTotalInfo += "\n" + totalPriceText + "\n";
     }
+
+    MarketItem mMarkgetItem = mapFusionItem[strSelectedItemName];
+    nSelectedItemPrice = mMarkgetItem.CurrentMinPrice;
+    int nSelectedItemTotalPrice = nSelectedItemPrice * mapFusionItemBundle[strSelectedItemName];
+    GetItemFee(nSelectedItemTotalPrice);
+
+    ItemPriceLabel->setText(std::to_string(nSelectedItemTotalPrice).c_str());
+    ItemNameLabel->show();
+    ItemPriceLabel->show();
+
+    TotalPricesLabel->setText(qstrTotalInfo);
+    TotalPricesLabel->show();
+
 }
 
 void MainWindow::DisplayItemInfo(QListWidgetItem* item)
 {
     QString selectedItemName = item->text();
     ItemNameLabel->setText(selectedItemName);
-    MarketItem mMarkgetItem = mapFusionItem[selectedItemName.toStdString()];
-    nSelectedItemPrice = mMarkgetItem.CurrentMinPrice;
-    ItemPriceLabel->setText(std::to_string(nSelectedItemPrice).c_str());
-    ItemNameLabel->show();
-    ItemPriceLabel->show();
     GetItemRecipe(selectedItemName.toStdString());
 }

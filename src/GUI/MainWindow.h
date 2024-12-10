@@ -19,6 +19,7 @@ private:
     int SetMarketItem();
     void GetItemRecipe(std::string strSelectedItemName);
     void DisplayItemInfo(QListWidgetItem* item);
+    void GetItemFee(int &nItemPrice);
 
 
 
@@ -43,5 +44,6 @@ private:
 
     QLabel *ItemNameLabel;
     QLabel *ItemPriceLabel;
+    QLabel *TotalPricesLabel;
 };
 
